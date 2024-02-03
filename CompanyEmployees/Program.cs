@@ -4,7 +4,7 @@ using NLog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(),
+LogManager.Setup().LoadConfigurationFromFile(string.Concat(Directory.GetCurrentDirectory(),
 "/nlog.config"));
 
 // Add services to the container
@@ -23,7 +23,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }
-else 
+else
 {
     app.UseHsts();
 }
