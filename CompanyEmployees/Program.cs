@@ -22,10 +22,9 @@ builder.Services.AddControllers(config =>
 { 
     config.RespectBrowserAcceptHeader = true;
     config.ReturnHttpNotAcceptable = true;
-}).AddXmlDataContractSerializerFormatters();
+}).AddXmlDataContractSerializerFormatters().AddCustomCSVFormatter()
+.AddApplicationPart(typeof(CompanyEmployees.Presentation.AssemblyReference).Assembly); ;
 
-builder.Services.AddControllers()
-    .AddApplicationPart(typeof(CompanyEmployees.Presentation.AssemblyReference).Assembly);
 
 var app = builder.Build();
 
