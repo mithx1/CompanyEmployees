@@ -1,5 +1,7 @@
 ﻿
 
+using Entities.Exceptions.BaseExceptions;
+
 namespace Entities.Exceptions
 {
     public sealed class CompanyNotFoundException : NotFoundException
