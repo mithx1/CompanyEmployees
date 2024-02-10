@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
+using Shared.DataTransferObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,11 +26,28 @@ namespace CompanyEmployees.Presentation.Controllers
             return Ok(employees);
         }
 
-        [HttpGet("{id:guid}")]
+        [HttpGet("{id:guid}", Name = "GetEmployeeForCompany")]
         public IActionResult GetEmployeeForCompany(Guid companyId, Guid id)
         {
             var employee = _service.EmployeeService.GetEmployee(companyId, id, trackChanges: false);
             return Ok(employee);
+        }
+
+        [HttpPost]
+        public IActionResult CreateEmployeeForCompany(Guid companyId,
+            [FromBody] EmployeeForCreationDto employee)
+        { 
+            if (employee is null)
+                return BadRequest("EmployeeForCreationDto object is null");
+
+            var employeeToReturn = 
+                _service.EmployeeService.CreateEmployeeForCompany(companyId, employee, trackChanges: false);
+
+            return CreatedAtRoute("GetEmployeeForCompany",
+                new {
+                    companyId,
+                    id = employeeToReturn.Id
+                }, employeeToReturn);
         }
 
     }
