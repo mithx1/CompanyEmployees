@@ -1,6 +1,6 @@
 ﻿using Contracts;
 using Entities.ErrorModel;
-using Entities.Exceptions;
+using Entities.Exceptions.BaseExceptions;
 using Microsoft.AspNetCore.Diagnostics;
 using System.Net;
 
