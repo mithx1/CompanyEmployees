@@ -13,7 +13,7 @@ namespace Service
         private readonly ILoggerManager _logger;
         private readonly IMapper _mapper;
 
-        public CompanyService(IRepositoryManager repository, 
+        public CompanyService(IRepositoryManager repository,
             ILoggerManager logger,
             IMapper mapper)
         {
@@ -29,7 +29,7 @@ namespace Service
             return companiesDto;
         }
 
-        public CompanyDto GetCompany(Guid id, bool trackChanges) 
+        public CompanyDto GetCompany(Guid id, bool trackChanges)
         {
             var company = _repository.Company.GetCompany(id, trackChanges);
 
@@ -65,7 +65,7 @@ namespace Service
             if (ids.Count() != companiesEntities.Count())
                 throw new CollectionByIdsBadRequestException();
 
-            var companiesToReturn = 
+            var companiesToReturn =
                 _mapper.Map<IEnumerable<CompanyDto>>(companiesEntities);
 
             return companiesToReturn;
@@ -91,7 +91,17 @@ namespace Service
             var ids = string.Join(",", companyCollectionToreturn.Select(c => c.Id));
 
             return (companies: companyCollectionToreturn, ids: ids);
-                
+        }
+
+        public void DeleteCompany(Guid companyId, bool trackChanges)
+        {
+            var company = _repository.Company.GetCompany(companyId, trackChanges);
+
+            if (company is null)
+                throw new CompanyNotFoundException(companyId);
+
+            _repository.Company.DeleteCompany(company);
+            _repository.Save();
         }
     }
 }
